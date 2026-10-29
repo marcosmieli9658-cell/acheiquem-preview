@@ -1,0 +1,10 @@
+# Oficina Codex: contexto e backups locais do projeto
+/.oficina-codex/
+
+# Planejamento e evidências permanecem no projeto local.
+/docs/
+/evidencias/
+/AGENTS.md
+.env
+.env.*
+node_modules/

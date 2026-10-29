@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2460f5">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Protótipo local do Achei Quem: encontre profissionais que atendem sua cidade no Vale do Paraíba paulista.">
+  <title>Achei Quem — encontre quem resolve</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="icons.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="home.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body data-theme="praca">
+  <a href="#main" class="skip-link">Pular para o conteúdo</a>
+  <aside class="concept-bar" aria-label="Comparar propostas visuais">
+    <div class="concept-inner">
+      <span class="preview-label"><span class="live-dot"></span> Prévias · dados fictícios <small>Escolha uma direção para explorar</small></span>
+      <div class="concept-switch" role="group" aria-label="Direção visual">
+        <button type="button" data-theme-choice="praca" aria-pressed="true"><span>01</span> Praça</button>
+        <button type="button" data-theme-choice="vivo" aria-pressed="false"><span>02</span> Bora resolver</button>
+        <button type="button" data-theme-choice="editorial" aria-pressed="false"><span>03</span> Perto de você</button>
+      </div>
+    </div>
+  </aside>
+  <header class="site-header"><div class="container header-inner">
+    <a class="brand" href="#/inicio" aria-label="Achei Quem — início"><span class="brand-image-crop"><img src="assets/brand-reference.png" width="1536" height="1024" alt="Achei Quem"></span></a>
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a class="nav-link" href="#/buscar">Encontrar profissionais</a>
+      <a class="nav-link" href="#/como-funciona">Como funciona</a>
+    </nav>
+    <div class="header-actions"><a id="account-link" class="nav-link account-link" href="#/entrar">Entrar</a><a href="#/cadastro?role=professional" class="btn btn-primary advertise-btn">Sou profissional <span aria-hidden="true">↗</span></a></div>
+  </div></header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="site-footer"><div class="container footer-inner">
+    <div><a class="footer-brand" href="#/inicio">Achei<span>Quem</span></a><p>Gente que sabe fazer. Perto de você.</p></div>
+    <nav aria-label="Rodapé"><a href="#/buscar">Encontrar profissionais</a><a href="#/como-funciona">Como funciona</a><a href="#/planos">Para profissionais</a><a href="#/sobre-prototipo">Sobre esta prévia</a></nav>
+    <p class="demo-disclosure">Protótipo demonstrativo · Perfis, fotos e avaliações ilustrativos.<br>Nenhuma contratação, mensagem ou cobrança real é realizada.</p>
+  </div></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="app-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+</body>
+</html>
