@@ -43,11 +43,12 @@ Os retratos foram gerados para demonstração. Nomes e avaliações são fictíc
 ```powershell
 node scripts/check-flows.mjs
 node scripts/check-crm-data.mjs
+node scripts/check-crm-recovery.mjs
 node --check dist/app.js
 node --check dist/admin/app.js
 ```
 
-Em 03/11/2026: nove cenários da demonstração pública e doze do adaptador do CRM aprovados; layout e fluxos conferidos no navegador em desktop e celular. A verificação `supabase/tests/verify-crm.sql` passou nas 23 asserções no projeto dedicado, com ROLLBACK de todos os registros e auditoria de teste. Esses checks não equivalem a uma auditoria completa de segurança.
+Em 03/11/2026: nove cenários da demonstração pública, doze do adaptador do CRM e treze da recuperação de senha aprovados; layout e fluxos conferidos no navegador em desktop e celular. A verificação `supabase/tests/verify-crm.sql` passou nas 23 asserções no projeto dedicado, com ROLLBACK de todos os registros e auditoria de teste. Os testes de recuperação simulam o SDK e não comprovam entrega de e-mail ou alteração real de senha. Esses checks não equivalem a uma auditoria completa de segurança.
 
 ## Publicação
 
