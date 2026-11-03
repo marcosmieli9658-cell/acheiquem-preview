@@ -129,7 +129,7 @@ body[data-theme="vivo"] .hero :focus-visible { outline-color: #ffbca8; }
 .hero-person { position: absolute; border-radius: 14px; }
 .hero-person--rafael { width: 52%; height: 318px; left: 8px; top: 9px; }
 .hero-person--mariana { width: 40%; height: 265px; right: 0; top: 91px; }
-.person-caption { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 13px 16px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgb(18 59 85 / 12%); }
+.person-caption { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 13px 16px; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgb(0 0 0 / 12%); }
 .caption-rafael { left: -17px; top: 242px; }
 .caption-mariana { right: -9px; top: 332px; }
 .caption-icon { color: var(--primary); background: #e9f4fb; border-radius: 50%; width: 39px; height: 39px; display: grid; place-items: center; }
@@ -220,7 +220,7 @@ body[data-theme="vivo"] .hero :focus-visible { outline-color: #ffbca8; }
 .category-grid--vivo .category-link:nth-child(3n):hover { background: #bddffa; }
 .category-grid--vivo .category-copy { min-width: 0; }
 .category-grid--vivo .category-copy strong { font-size: .95rem; }
-.category-grid--vivo .category-copy > span { display: block; font-size: .68rem; margin-top: 3px; color: #496172; line-height: 1.4; }
+.category-grid--vivo .category-copy > span { display: block; font-size: .7rem; margin-top: 3px; color: #496172; line-height: 1.4; }
 .category-grid--vivo .category-arrow { margin-left: auto; }
 .vivo-message-strip { background: #ffddce; color: #4b423a; padding: 18px 0; }
 .vivo-message-strip .container { display: flex; align-items: center; justify-content: center; gap: 30px; font-size: .96rem; }

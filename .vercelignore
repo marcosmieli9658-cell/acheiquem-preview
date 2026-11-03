@@ -1,0 +1,10 @@
+.git
+.oficina-codex
+docs
+evidencias
+supabase
+scripts
+AGENTS.md
+.env
+.env.*
+node_modules

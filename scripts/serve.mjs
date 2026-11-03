@@ -8,7 +8,7 @@ const mime = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8
 http.createServer((req,res) => {
   let route;
   try { route = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); } catch {res.writeHead(400);res.end();return;}
-  const file = path.resolve(root, '.' + (route === '/' ? '/index.html' : route));
+  const file = path.resolve(root, '.' + (route.endsWith('/') ? route + 'index.html' : route));
   const relative = path.relative(root,file);
   if(relative.startsWith('..') || path.isAbsolute(relative)) {res.writeHead(403);res.end();return;}
   fs.readFile(file,(error,data) => {if(error){res.writeHead(404);res.end('Arquivo não encontrado');return;}res.writeHead(200,{'Content-Type':mime[path.extname(file)] || 'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(data);});

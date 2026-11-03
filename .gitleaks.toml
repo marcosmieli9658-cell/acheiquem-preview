@@ -1,0 +1,14 @@
+title = "Achei Quem — secret scanning"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+
+[[rules.allowlists]]
+description = "Exact public Supabase publishable key in the browser configuration; RLS remains required."
+condition = "AND"
+paths = ['''^dist/admin/config\.js$''']
+regexTarget = "secret"
+regexes = ['''^sb_publishable_flH_uagaXmGLgwwfIZ-43g_7fAto21i$''']
