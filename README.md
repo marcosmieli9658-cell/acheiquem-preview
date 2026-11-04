@@ -2,7 +2,7 @@
 
 Catálogo de profissionais do Vale do Paraíba paulista. **Bora resolver** é a direção visual escolhida em 03/11/2026. As alternativas anteriores permanecem no histórico do Git.
 
-HTML, CSS e JavaScript, sem etapa de build. Imagens e fontes são servidas junto com o site. O CRM conectado carrega o SDK oficial do Supabase; a demonstração pública funciona sem essa dependência. A interface se adapta a celular e computador.
+HTML, CSS e JavaScript, sem framework ou instalação de dependências. Uma etapa local de pré-renderização usa os mesmos renderizadores do navegador para gerar o HTML inicial da home. Imagens e fontes são servidas junto com o site. O CRM conectado carrega o SDK oficial do Supabase; a demonstração pública funciona sem essa dependência. A interface se adapta a celular e computador.
 
 ## Abrir localmente
 
@@ -44,6 +44,7 @@ Os retratos foram gerados para demonstração. Nomes e avaliações são fictíc
 node scripts/check-flows.mjs
 node scripts/check-crm-data.mjs
 node scripts/check-crm-recovery.mjs
+node scripts/prerender-home.mjs --check
 node --check dist/app.js
 node --check dist/admin/app.js
 ```
@@ -61,6 +62,12 @@ A marcação não usa os dados de `data.js`: profissionais, fotos, avaliações,
 Bloco validado no Schema.org Validator em 03/11/2026: zero erros e zero avisos. `noindex, nofollow`, `robots.txt` e `X-Robots-Tag` foram preservados. Esta preparação semântica não ativa indexação nem promete resultados enriquecidos; os metadados deverão ser revistos no lançamento e em eventual troca de domínio.
 
 ## Publicação
+
+Antes de publicar mudanças na home, rode `node scripts/prerender-home.mjs` para atualizar o HTML inicial. O modo `--check` detecta se ele divergiu dos renderizadores. O conteúdo permanece disponível antes do JavaScript, com aviso de demonstração; os controles interativos exigem JavaScript.
+
+Imagens WebP sem perdas e fontes WOFF2 são as versões carregadas pelo navegador; originais e licenças permanecem como fonte. Os quatro materiais otimizados somam 2.265.570 bytes, contra 4.075.764 dos originais (redução de 44,41%, sem equivaler a uma medição de Core Web Vitals). A fidelidade pode ser conferida com `py -3.14 scripts/check-assets.py` no ambiente de desenvolvimento já preparado, que tem Pillow/fontTools/Brotli. Isso não é dependência para servir o site.
+
+As melhorias de SEO/GEO/AEO incluem metadados de compartilhamento, cartão social PNG, favicon, HTML inicial e respostas claras em “Como funciona”. Canonical, Open Graph e schema permanecem gerais na raiz, inclusive nas rotas de perfis fictícios. A indexação e URLs públicas definitivas devem ser revistas no lançamento com conteúdo real; esta prévia não representa um lançamento orgânico.
 
 ### Cloudflare Pages — hospedagem escolhida
 

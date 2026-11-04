@@ -16,7 +16,7 @@ const txState = transaction => transaction.status === 'pending' && transaction.d
 const txBadge = transaction => badge(txState(transaction),txState(transaction) === 'pending' ? 'A vencer' : transaction.status === 'paid' ? transaction.direction === 'income' ? 'Recebido' : 'Pago' : undefined);
 const initials = name => String(name || 'AQ').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
 const safePhoto = url => {if(!url)return '';try{const parsed=new URL(url,location.href);return ['https:','http:'].includes(parsed.protocol) && (parsed.protocol==='https:' || parsed.origin===location.origin) ? parsed.href : '';}catch{return '';}};
-const photo = (person, extra = '') => Number.isInteger(person.photoIndex) && person.photoUrl === '../assets/professionals.png' ? `<span class="profile-photo sprite-photo ${extra}" role="img" aria-label="Retrato ilustrativo de ${esc(person.name)}" style="background-position:${(person.photoIndex % 3) * 50}% ${Math.floor(person.photoIndex / 3) * 100}%"></span>` : safePhoto(person.photoUrl) ? `<img class="profile-photo ${extra}" src="${esc(safePhoto(person.photoUrl))}" alt="Foto de ${esc(person.name)}" loading="lazy" referrerpolicy="no-referrer">` : `<span class="profile-photo profile-fallback ${extra}" aria-label="${esc(person.name)}">${esc(initials(person.name))}</span>`;
+const photo = (person, extra = '') => Number.isInteger(person.photoIndex) && person.photoUrl === '../assets/professionals.png' ? `<span class="profile-photo sprite-photo ${extra}" role="img" aria-label="Retrato ilustrativo de ${esc(person.name)}" style="background-position:${(person.photoIndex % 3) * 50}% ${Math.floor(person.photoIndex / 3) * 100}%"></span>` : safePhoto(person.photoUrl) ? `<img class="profile-photo ${extra}" src="${esc(safePhoto(person.photoUrl))}" alt="Foto de ${esc(person.name)}" width="84" height="84" decoding="async" loading="lazy" referrerpolicy="no-referrer">` : `<span class="profile-photo profile-fallback ${extra}" aria-label="${esc(person.name)}">${esc(initials(person.name))}</span>`;
 const allCities = () => [...new Set([...state.data.professionals.map(p=>p.city),...state.data.clients.map(c=>c.city)])].filter(Boolean).sort((a,b)=>a.localeCompare(b,'pt-BR'));
 const options = (values, selected, emptyLabel = 'Todas') => `<option value="">${emptyLabel}</option>${values.map(value=>`<option value="${esc(value)}" ${value===selected?'selected':''}>${esc(value)}</option>`).join('')}`;
 const splitValues = value => [...new Set(String(value||'').split(',').map(v=>v.trim()).filter(Boolean))];
@@ -35,7 +35,7 @@ function connectedStore() {
   }
   return connectedStorePromise;
 }
-const state = {store:null,session:null,data:{professionals:[],clients:[],categories:[],categoryRequests:[],transactions:[],audit:[]},loading:false,error:'',loginError:'',noticeTimer:null,menu:false,filters:{professionals:{query:'',city:'',status:'',subscription:''},clients:{query:'',city:'',status:''},finance:{direction:'',status:'',city:'',month:''}}};
+const state = {store:null,session:null,data:{professionals:[],clients:[],categories:[],categoryRequests:[],transactions:[],audit:[]},initializing:false,loading:false,error:'',loginError:'',noticeTimer:null,menu:false,filters:{professionals:{query:'',city:'',status:'',subscription:''},clients:{query:'',city:'',status:''},finance:{direction:'',status:'',city:'',month:''}}};
 const navItems = [
   ['visao-geral','Visão geral','brick'],['cadastros','Cadastros','user'],['categorias','Categorias','filter'],['financeiro','Financeiro','calendar'],['cidades','Cidades','pin'],['historico','Histórico','clock']
 ];
@@ -46,7 +46,7 @@ function pendingRequests(id){return state.data.categoryRequests.filter(r=>r.prof
 function professionalDebt(id){return state.data.transactions.filter(t=>t.professionalId===id&&t.direction==='income'&&t.kind==='subscription'&&txState(t)==='overdue');}
 function accounting(transactions){return transactions.reduce((result,t)=>{if(t.status==='cancelled')return result;if(t.status==='paid')result[t.direction==='income'?'received':'paid']+=t.amountCents;else{result[t.direction==='income'?'receivable':'payable']+=t.amountCents;if(txState(t)==='overdue'&&t.direction==='income')result.overdue+=t.amountCents;}return result;},{received:0,paid:0,receivable:0,payable:0,overdue:0});}
 function formError(form,message){const error=form.querySelector('.form-error');if(error){error.textContent=message;error.hidden=false;error.focus();}else notify(message);}
-function field(label, name, value='', options={}){return `<label class="field ${options.full?'full':''}"><span>${label}</span><input name="${name}" type="${options.type||'text'}" value="${esc(value)}" ${options.required?'required':''} ${options.min?`min="${esc(options.min)}"`:''} ${options.max?`max="${esc(options.max)}"`:''} ${options.step?`step="${esc(options.step)}"`:''} ${options.placeholder?`placeholder="${esc(options.placeholder)}"`:''} ${options.autocomplete?`autocomplete="${esc(options.autocomplete)}"`:''}>${options.help?`<small class="help">${options.help}</small>`:''}</label>`;}
+function field(label, name, value='', options={}){return `<label class="field ${options.full?'full':''}"><span>${label}</span><input name="${name}" type="${options.type||'text'}" ${options.type==='email'?'spellcheck="false" autocapitalize="none"':''} value="${esc(value)}" ${options.required?'required':''} ${options.min?`min="${esc(options.min)}"`:''} ${options.max?`max="${esc(options.max)}"`:''} ${options.step?`step="${esc(options.step)}"`:''} ${options.placeholder?`placeholder="${esc(options.placeholder)}"`:''} ${options.autocomplete?`autocomplete="${esc(options.autocomplete)}"`:''}>${options.help?`<small class="help">${options.help}</small>`:''}</label>`;}
 function formErrorBox(){return '<p class="error form-error" role="alert" tabindex="-1" hidden></p>';}
 function paymentField(selected='other'){return `<label class="field"><span>Forma de pagamento</span><select name="paymentMethod">${[['other','A definir / outra'],['pix','Pix'],['transfer','Transferência'],['cash','Dinheiro'],['card','Cartão']].map(([value,label])=>`<option value="${value}" ${value===selected?'selected':''}>${label}</option>`).join('')}</select></label>`;}
 function title(title, subtitle, action=''){return `<div class="page-heading"><div><h1>${title}</h1><p>${subtitle}</p></div>${action?`<div class="button-row">${action}</div>`:''}</div>`;}
@@ -59,7 +59,7 @@ function shell(content){
   const {path}=currentRoute();const active=path.includes('profissional')?'cadastros':path.includes('lancamento')?'financeiro':path.split('/')[1];
   const pending=state.data.professionals.filter(p=>p.status==='pending').length;
   const who=state.store.mode==='demo'?'Equipe de demonstração':state.session?.user?.email || 'Administrador';
-  app.innerHTML=`${state.menu?'<button class="sidebar-scrim" data-menu-close aria-label="Fechar navegação"></button>':''}<aside class="sidebar ${state.menu?'open':''}" id="sidebar"><a href="#/visao-geral" class="brand-word"><span class="brand-symbol">${icon('user',21)}</span>Achei<span>Quem</span></a><button class="icon-btn sidebar-close" data-menu-close aria-label="Fechar navegação">${icon('close')}</button><p class="workspace-label">PAINEL ADMINISTRATIVO</p><nav aria-label="Administração">${navItems.map(([id,label,ico])=>`<a class="nav-item ${active===id?'active':''}" href="#/${id}" ${active===id?'aria-current="page"':''}>${icon(ico,19)}${label}${id==='cadastros'&&pending?`<span class="nav-count">${pending}<span class="sr-only"> em análise</span></span>`:''}</a>`).join('')}</nav><div class="sidebar-bottom"><a href="../">${icon('arrow',17)} Abrir o site</a><p>Uma operação organizada.<br>Mais gente se encontrando.</p></div></aside><div class="workspace"><header class="topbar"><div class="topbar-left"><button class="icon-btn menu-toggle" data-menu aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="${state.menu}">${icon('menu')}</button><span>Achei Quem / Administração</span></div><div class="topbar-user"><span class="avatar-initial" aria-hidden="true">${state.store.mode==='demo'?'AQ':esc(initials(who))}</span><div><div class="user-name">${esc(who)}</div><div class="user-subtitle">${state.store.mode==='demo'?'Ambiente demonstrativo':'Acesso da equipe'}</div></div><button class="btn btn-small" data-logout>${icon('logout',17)} Sair</button></div></header>${state.store.mode==='demo'?`<div class="mode-banner">${icon('info',17)}<span><strong>Demonstração.</strong> Dados fictícios. As alterações ficam apenas nesta sessão e não chegam ao Supabase.</span></div>`:''}<main id="content" class="content" tabindex="-1">${content}</main></div>`;
+  app.innerHTML=`${state.menu?'<button class="sidebar-scrim" data-menu-close aria-label="Fechar navegação"></button>':''}<aside class="sidebar ${state.menu?'open':''}" id="sidebar" ${state.menu?'role="dialog" aria-modal="true" aria-label="Navegação administrativa"':''}><a href="#/visao-geral" class="brand-word"><span class="brand-symbol">${icon('user',21)}</span>Achei<span>Quem</span></a><button class="icon-btn sidebar-close" data-menu-close aria-label="Fechar navegação">${icon('close')}</button><p class="workspace-label">PAINEL ADMINISTRATIVO</p><nav aria-label="Administração">${navItems.map(([id,label,ico])=>`<a class="nav-item ${active===id?'active':''}" href="#/${id}" ${active===id?'aria-current="page"':''}>${icon(ico,19)}${label}${id==='cadastros'&&pending?`<span class="nav-count">${pending}<span class="sr-only"> em análise</span></span>`:''}</a>`).join('')}</nav><div class="sidebar-bottom"><a href="../">${icon('arrow',17)} Abrir o site</a><p>Uma operação organizada.<br>Mais gente se encontrando.</p></div></aside><div class="workspace" ${state.menu?'inert':''}><header class="topbar"><div class="topbar-left"><button class="icon-btn menu-toggle" data-menu aria-label="Abrir navegação" aria-controls="sidebar" aria-expanded="${state.menu}">${icon('menu')}</button><span>Achei Quem / Administração</span></div><div class="topbar-user"><span class="avatar-initial" aria-hidden="true">${state.store.mode==='demo'?'AQ':esc(initials(who))}</span><div><div class="user-name">${esc(who)}</div><div class="user-subtitle">${state.store.mode==='demo'?'Ambiente demonstrativo':'Acesso da equipe'}</div></div><button class="btn btn-small" data-logout>${icon('logout',17)} Sair</button></div></header>${state.store.mode==='demo'?`<div class="mode-banner">${icon('info',17)}<span><strong>Demonstração.</strong> Dados fictícios. As alterações ficam apenas nesta sessão e não chegam ao Supabase.</span></div>`:''}<main id="content" class="content" tabindex="-1">${content}</main></div>`;
 }
 function dashboard(){
   const pending=state.data.professionals.filter(p=>p.status==='pending');
@@ -87,6 +87,8 @@ function transactionForm(){const {params}=currentRoute();const id=params.get('id
 function citiesPage(){const cities=[...new Set([...allCities(),...state.data.professionals.flatMap(p=>list(p.cities))])].sort((a,b)=>a.localeCompare(b,'pt-BR'));const max=Math.max(1,...cities.map(city=>state.data.professionals.filter(p=>p.city===city).length));return `${title('Cidades','Veja onde estão os cadastros e quais regiões os profissionais atendem.')}<div class="stats">${stat('Cidades com cadastros',allCities().length,'Cidades de base de clientes ou profissionais')}${stat('Profissionais únicos',state.data.professionals.length,'Cada profissional é contado uma vez')}${stat('Clientes únicos',state.data.clients.length,'Cada cliente é contado uma vez')}${stat('Cidades atendidas',new Set(state.data.professionals.flatMap(p=>list(p.cities))).size,'Cobertura declarada pelos profissionais')}</div><section class="panel"><div class="panel-head"><div><h2>Distribuição dos cadastros</h2><p>A cidade de base é diferente da área de atendimento.</p></div></div>${cities.length?`<div class="table-scroll"><table class="data-table city-table"><thead><tr><th scope="col">Cidade</th><th scope="col">Profissionais de base</th><th scope="col">Clientes</th><th scope="col">Aprovados</th><th scope="col">Assinaturas ativas</th><th scope="col">Atendem a cidade</th></tr></thead><tbody>${cities.map(city=>{const pros=state.data.professionals.filter(p=>p.city===city);return `<tr><td><strong>${esc(city)}</strong><span class="city-bar"><span style="width:${Math.round(pros.length/max*100)}%"></span></span></td><td class="numeric">${pros.length}</td><td class="numeric">${state.data.clients.filter(c=>c.city===city).length}</td><td class="numeric">${pros.filter(p=>p.status==='approved').length}</td><td class="numeric">${pros.filter(p=>p.subscriptionStatus==='active').length}</td><td class="numeric">${state.data.professionals.filter(p=>list(p.cities).includes(city)).length}</td></tr>`;}).join('')}</tbody></table></div>`:empty('Os cadastros vão desenhar este mapa','Os indicadores aparecerão quando houver clientes e profissionais cadastrados.','pin')}<div class="legend">O total geral conta pessoas únicas. A coluna “Atendem a cidade” pode incluir a mesma pessoa em mais de um município.</div></section>`;}
 function historyPage(){return `${title('Histórico','Acompanhe o registro das ações administrativas realizadas na plataforma.')}<section class="panel"><div class="panel-head"><h2>Atividades registradas</h2><span class="tag">${state.data.audit.length}</span></div><div class="panel-body">${activity(state.data.audit)}</div></section>`;}
 function render(){
+  document.body.classList.toggle('navigation-open',Boolean(state.menu));
+  if(state.initializing){app.innerHTML='<main id="content" class="boot" aria-busy="true"><span class="boot-mark" aria-hidden="true">AQ</span><p role="status">Verificando seu acesso…</p></main>';return;}
   if(!state.session){login();return;}
   if(state.loading){shell('<div aria-busy="true"><div class="skeleton-title"></div><section class="panel"><div class="loading-rows"><span class="loading-line"></span><span class="loading-line"></span><span class="loading-line"></span><span class="loading-line"></span></div></section><p class="help">Carregando informações do painel…</p></div>');return;}
   if(state.error){shell(`<section class="page-error"><h1>Não foi possível carregar o painel</h1><p>${esc(state.error)}</p><button class="btn btn-primary" data-refresh>Tentar novamente</button></section>`);return;}
@@ -104,7 +106,7 @@ function render(){
   else content=`${empty('Página não encontrada','Use a navegação para acessar uma área do painel.')}<a class="text-link" href="#/visao-geral">Voltar à visão geral</a>`;
   shell(content);document.title=`${({cadastros:'Cadastros',categorias:'Categorias',financeiro:'Financeiro',cidades:'Cidades',historico:'Histórico'}[path.split('/')[1]])||'Administração'} | Achei Quem`;
 }
-function clearPrivateState(message='Sua sessão foi encerrada. Entre novamente para continuar.') {
+function clearPrivateState(message='Sua sessão foi encerrada. Entre novamente para continuar.', initializing=false) {
   authEpoch++;
   storeSelection++;
   clearTimeout(authCheckTimer);
@@ -112,6 +114,7 @@ function clearPrivateState(message='Sua sessão foi encerrada. Entre novamente p
   unsubscribeAuth?.();
   unsubscribeAuth=null;
   state.session=null;
+  state.initializing=initializing;
   state.data={professionals:[],clients:[],categories:[],categoryRequests:[],transactions:[],audit:[]};
   state.filters={professionals:{query:'',city:'',status:'',subscription:''},clients:{query:'',city:'',status:''},finance:{direction:'',status:'',city:'',month:''}};
   state.loading=false;
@@ -166,7 +169,7 @@ async function loadData() {
   }
 }
 async function start(demo=false) {
-  clearPrivateState('');
+  clearPrivateState('',true);
   const selection=storeSelection;
   try {
     const store=demo ? await createStore(window.AQCRM_CONFIG||{},{demo:true}) : await connectedStore();
@@ -175,7 +178,7 @@ async function start(demo=false) {
     const epoch=authEpoch;
     const session=await store.getSession();
     if(!currentOperation(store,epoch))return;
-    state.session=session;
+    state.session=session;state.initializing=false;
     if(session)await loadData();else render();
   } catch(error) {
     if(selection===storeSelection)clearPrivateState(error.message || 'Não foi possível iniciar o painel.');
@@ -207,7 +210,17 @@ document.addEventListener('click',async event=>{const target=event.target.closes
   if(target.matches('[data-clear-finance]')){state.filters.finance={direction:'',status:'',city:'',month:''};render();return;}
   if(target.matches('.skip-link')){event.preventDefault();document.querySelector('#content')?.focus();}
 });
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&state.menu){state.menu=false;render();document.querySelector('.menu-toggle')?.focus();}});
+document.addEventListener('keydown',event=>{
+  if(!state.menu)return;
+  if(event.key==='Escape'){event.preventDefault();state.menu=false;render();document.querySelector('.menu-toggle')?.focus();return;}
+  if(event.key!=='Tab')return;
+  const sidebar=document.querySelector('#sidebar');
+  const controls=[...sidebar.querySelectorAll('a[href],button:not([disabled])')].filter(el=>el.getClientRects().length);
+  const first=controls[0],last=controls[controls.length-1];
+  if(!first)return;
+  if(event.shiftKey&&(document.activeElement===first||!sidebar.contains(document.activeElement))){event.preventDefault();last.focus();}
+  else if(!event.shiftKey&&(document.activeElement===last||!sidebar.contains(document.activeElement))){event.preventDefault();first.focus();}
+});
 document.addEventListener('submit',async event=>{
   const form=event.target;if(!(form instanceof HTMLFormElement))return;event.preventDefault();if(!form.reportValidity())return;const data=new FormData(form);
   if(form.id==='login-form'){
@@ -240,6 +253,11 @@ document.addEventListener('submit',async event=>{
   if(form.id==='transaction-form'){const text=String(data.get('amount')).replace(',','.');if(!/^\d+(\.\d{1,2})?$/.test(text)){formError(form,'Informe um valor positivo com até duas casas decimais.');return;}const [whole,decimal='']=text.split('.');const amountCents=Number(whole)*100+Number(decimal.padEnd(2,'0'));const direction=String(data.get('direction'));const kind=String(data.get('kind'));if((direction==='income'&&kind==='expense')||(direction==='expense'&&kind!=='expense')){formError(form,'Escolha “Despesa da plataforma” para saídas, ou mensalidade/outra receita para entradas.');return;}const professionalId=String(data.get('professionalId'))||null;if(kind==='subscription'&&!professionalId){formError(form,'Vincule um profissional para registrar uma mensalidade.');return;}const old=state.data.transactions.find(t=>t.id===form.dataset.id);await mutate(form,store=>store.saveTransaction({...old,direction,kind,description:String(data.get('description')).trim(),amountCents,dueOn:String(data.get('dueOn')),professionalId,paymentMethod:String(data.get('paymentMethod')).trim(),notes:String(data.get('notes')).trim(),status:'pending',paidOn:null}),'Lançamento salvo como previsão.','/financeiro');return;}
   if(form.id==='settle-form'){await mutate(form,store=>store.settleTransaction(form.dataset.id,String(data.get('paidOn'))),'Movimentação confirmada e registrada no histórico.','/financeiro');return;}
   if(form.id==='cancel-transaction-form'){await mutate(form,store=>store.cancelTransaction(form.dataset.id),'Previsão cancelada. O histórico foi preservado.','/financeiro');}
+});
+const mobileNavigation=window.matchMedia('(max-width:760px)');
+mobileNavigation.addEventListener('change',event=>{
+  if(event.matches||!state.menu)return;
+  state.menu=false;render();document.querySelector('#content')?.focus({preventScroll:true});
 });
 window.addEventListener('hashchange',()=>{state.menu=false;render();document.querySelector('#content')?.focus({preventScroll:true});window.scrollTo({top:0});});
 start(false).catch(error=>{state.loginError=error.message||'Não foi possível iniciar o painel.';login();});
