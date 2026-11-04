@@ -50,6 +50,8 @@ node --check dist/admin/app.js
 
 Em 03/11/2026: nove cenários da demonstração pública, doze do adaptador do CRM e treze da recuperação de senha aprovados; layout e fluxos conferidos no navegador em desktop e celular. A verificação `supabase/tests/verify-crm.sql` passou nas 23 asserções no projeto dedicado, com ROLLBACK de todos os registros e auditoria de teste. Os testes de recuperação simulam o SDK e não comprovam entrega de e-mail ou alteração real de senha. Esses checks não equivalem a uma auditoria completa de segurança.
 
+Na validação real, o responsável confirmou a redefinição da senha e o login. O navegador mostrou o CRM conectado, oito categorias ativas e financeiro sem lançamentos; a sessão foi restaurada após recarregar a página, sem erros de console. Nenhum registro fictício foi criado nessa conferência. A gravação pelo frontend conectado não foi exercitada; os fluxos de alteração foram verificados na demonstração e nos testes SQL com reversão.
+
 ## Publicação
 
 ### Cloudflare Pages — hospedagem escolhida

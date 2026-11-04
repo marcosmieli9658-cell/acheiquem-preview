@@ -50,4 +50,6 @@ Ao mudar o domínio, atualizar Site URL, o destino permitido e o frontend no mes
 
 O script exige exatamente um administrador no ambiente dedicado. Não é uma rotina para rodar indiscriminadamente em produção nem deve ser alterado para usar `COMMIT`. Os testes SQL não substituem a validação de login e sessão no navegador.
 
+Em 03/11/2026, após a redefinição confirmada pelo responsável, o acesso real foi observado no navegador: oito categorias ativas, nenhum cadastro ou lançamento financeiro e restauração da sessão após recarregar. A conferência pelo frontend foi de leitura; nenhuma informação de teste foi gravada no banco por essa interface.
+
 Referências consultadas em 03/11/2026: [SDK oficial](https://supabase.com/docs/reference/javascript/installing), [registro oficial da versão](https://registry.npmjs.org/@supabase/supabase-js/2.118.0), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security).
