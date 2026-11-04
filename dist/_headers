@@ -15,6 +15,9 @@
 /styles.css
   Cache-Control: no-cache
 
+/brand.css
+  Cache-Control: no-cache
+
 /app.css
   Cache-Control: no-cache
 

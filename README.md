@@ -4,6 +4,8 @@ Catálogo de profissionais do Vale do Paraíba paulista. **Bora resolver** é a 
 
 HTML, CSS e JavaScript, sem framework ou instalação de dependências. Uma etapa local de pré-renderização usa os mesmos renderizadores do navegador para gerar o HTML inicial da home. Imagens e fontes são servidas junto com o site. O CRM conectado carrega o SDK oficial do Supabase; a demonstração pública funciona sem essa dependência. A interface se adapta a celular e computador.
 
+A identidade **Bora resolver** do manual v1.0 é compartilhada pelo site, CRM e recuperação em `dist/brand.css`: cores, Nunito Sans local e reprodução da logo original em placa branca com proteção. As folhas de cada área definem a composição e os estados próprios. O cabeçalho mantém a assinatura de 144 px no celular e reorganiza as ações em duas linhas nas telas mais estreitas.
+
 ## Abrir localmente
 
 Abra `dist/index.html` no navegador ou execute, na raiz:

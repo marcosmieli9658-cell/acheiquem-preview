@@ -1,0 +1,78 @@
+/* Achei Quem - Bora resolver | Manual de identidade visual v1.0 */
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("assets/fonts/nunito-sans.woff2") format("woff2"),
+    url("assets/fonts/nunito-sans.ttf") format("truetype");
+  font-weight: 200 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --aq-blue: #245af2;
+  --aq-blue-hover: #1746cf;
+  --aq-navy: #132b4b;
+  --aq-coral: #ff805d;
+  --aq-white: #ffffff;
+  --aq-ink: #19354c;
+  --aq-muted: #586b79;
+  --aq-blue-pale: #e9f0ff;
+  --aq-coral-pale: #ffe5de;
+  --aq-category-coral: #ffddce;
+  --aq-category-blue: #d2eaff;
+  --aq-warm: #fffaf6;
+  --aq-how: #e9f4ff;
+  --aq-line: #dbe4e9;
+  --aq-success: #176447;
+  --aq-danger: #a6303e;
+  --aq-warning: #81531a;
+  --aq-font: "Nunito Sans", "Segoe UI", sans-serif;
+  --aq-radius-button: 10px;
+  --aq-radius-card: 14px;
+  --aq-motion: 180ms;
+}
+
+/* Reproduce the supplied horizontal artwork; never retype the lettering.
+   The visible bounds in the original board are x52/y306 to x1488/y616.
+   A white plate reserves 1x: the coral head is about 84/1436 of its width. */
+.aq-brand {
+  --aq-logo-width: 185px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--aq-logo-width) * .06);
+  background: var(--aq-white);
+  border-radius: 10px;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.aq-logo {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: var(--aq-logo-width, 185px);
+  aspect-ratio: 1436 / 310;
+  overflow: hidden;
+}
+
+.aq-logo img {
+  position: absolute;
+  display: block;
+  width: 106.963788%;
+  max-width: none;
+  height: auto;
+  left: -3.621170%;
+  top: -98.709677%;
+}
+
+.aq-brand:focus-visible {
+  outline: 3px solid var(--aq-blue-hover);
+  outline-offset: 3px;
+}
+
+::selection {
+  color: var(--aq-navy);
+  background: var(--aq-coral-pale);
+}

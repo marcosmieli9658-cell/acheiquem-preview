@@ -1,12 +1,11 @@
-.recovery-main{min-height:100vh;display:grid;place-items:center;padding:40px 24px;background:#fff}
+.recovery-main{min-height:100vh;display:grid;place-items:center;padding:40px 24px;background:var(--page)}
 .recovery-card{width:min(440px,100%)}
-.recovery-brand{margin-bottom:40px;gap:0;color:var(--navy)}
-.recovery-brand span{color:var(--blue)}
+.recovery-brand{margin-bottom:32px;--aq-logo-width:185px}
 .recovery-card #recovery-title{font-size:1.85rem}
 .recovery-card #recovery-description{margin-bottom:24px}
-.recovery-status{padding:14px 16px;margin:0 0 22px;background:var(--blue-pale);color:#24416e;border-radius:8px;font-size:.9rem;line-height:1.6}
+.recovery-status{padding:16px;margin:0 0 24px;background:var(--blue-pale);color:var(--navy);border-radius:12px;font-size:.9rem;line-height:1.6}
 .recovery-success{display:grid;gap:24px;margin:24px 0}
 .recovery-success p{color:var(--success)}
 .recovery-card .error{margin-top:0}
 .recovery-card .login-back{margin-top:26px}
-@media(max-width:480px){.recovery-main{align-items:start;padding:30px 22px}.recovery-brand{margin-bottom:34px}}
+@media(max-width:480px){.recovery-main{align-items:start;padding:24px 20px}.recovery-brand{margin-bottom:32px;--aq-logo-width:144px}}
