@@ -52,6 +52,14 @@ Em 03/11/2026: nove cenários da demonstração pública, doze do adaptador do C
 
 Na validação real, o responsável confirmou a redefinição da senha e o login. O navegador mostrou o CRM conectado, oito categorias ativas e financeiro sem lançamentos; a sessão foi restaurada após recarregar a página, sem erros de console. Nenhum registro fictício foi criado nessa conferência. A gravação pelo frontend conectado não foi exercitada; os fluxos de alteração foram verificados na demonstração e nos testes SQL com reversão.
 
+## Dados estruturados da prévia
+
+`dist/index.html` contém um bloco JSON-LD estático com `WebSite` e `WebPage`, relacionados por `isPartOf`. Usa a URL pública raiz, o nome Achei Quem, o idioma `pt-BR` e descrições explícitas da demonstração. O `WebPage` descreve a prévia inteira, pois a navegação atual usa fragmentos na mesma página HTML.
+
+A marcação não usa os dados de `data.js`: profissionais, fotos, avaliações, notas, serviços e assinaturas fictícias ficam fora do JSON-LD. Não há ofertas, preços, `SearchAction`, marcação de aplicativo futuro ou dados empresariais não confirmados. O CRM e a recuperação de senha não recebem schema.
+
+Bloco validado no Schema.org Validator em 03/11/2026: zero erros e zero avisos. `noindex, nofollow`, `robots.txt` e `X-Robots-Tag` foram preservados. Esta preparação semântica não ativa indexação nem promete resultados enriquecidos; os metadados deverão ser revistos no lançamento e em eventual troca de domínio.
+
 ## Publicação
 
 ### Cloudflare Pages — hospedagem escolhida
